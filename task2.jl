@@ -21,7 +21,7 @@ set_silent(m)
 
 @constraint(m, [s=S,j=J], sum(x[i,j,s] for i in I) <= D[j,s])
 @constraint(m, sum(y[i] for i in I) <= n)
-@constraint(m, [i=I, s=S], r[i] <= y[i]*B[i])
+@constraint(m, [i=I], r[i] <= y[i]*B[i])
 @constraint(m, [i=I, s=S], sum(x[i,j,s] for j in J) <= r[i])
 
 optimize!(m)
