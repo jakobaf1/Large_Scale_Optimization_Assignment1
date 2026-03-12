@@ -18,7 +18,7 @@ set_silent(m)
 @variable(m, z[J,S] >= 0)
 @variable(m, y[I], Bin)
 
-@objective(m, Min, sum(P*(sum(y[i]*F[i] + sum(x[i,j,s]*(C[i]+T[i,j]) for j in J) for i in I)) + sum(z[j,s]*u for j in J) for s in S))
+@objective(m, Min, sum(y[i]*F[i] + r[i]*C[i] for i in I) + sum(P*(sum(x[i,j,s]*T[i,j] for i in I) + z[j,s]*u) for j in J, s in S))
 
 @constraint(m, [s=S,j=J], sum(x[i,j,s] for i in I) + z[j,s] >= D[j,s])
 @constraint(m, sum(y[i] for i in I) <= n)

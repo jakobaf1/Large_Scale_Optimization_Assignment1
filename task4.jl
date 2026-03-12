@@ -25,7 +25,7 @@ set_silent(mas)
 function solve_master( u_dual )
     u1 = u_dual[1]
     u2 = u_dual[2]
-    u3 = u_dual[3]
+    # u3 = u_dual[3]
     
     # Add Constraints
     @constraint(mas, sum(u1[j,s]*D[j,s] for j in J, s in S) + sum(u2[i]*B[i]*y[i] for i in I) <= theta)
