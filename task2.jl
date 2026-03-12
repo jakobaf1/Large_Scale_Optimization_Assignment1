@@ -13,13 +13,14 @@ Gurobi_constructor = ()->Gurobi.Optimizer(GRB_ENV)
 m = Model(Gurobi_constructor)
 set_silent(m)
 
-@variable(m, x[I,J,S] >= 0, Int)
-@variable(m, r[I] >= 0, Int)
+@variable(m, x[I,J,S] >= 0)
+@variable(m, r[I] >= 0)
+@variable(m, z[J,S] >= 0)
 @variable(m, y[I], Bin)
 
-@objective(m, Min, sum(P*(sum(y[i]*F[i] + sum(x[i,j,s]*(C[i]+T[i,j]) for j in J) for i in I)) + sum((D[j,s] - sum(x[i,j,s] for i in I))*u for j in J) for s in S))
+@objective(m, Min, sum(P*(sum(y[i]*F[i] + sum(x[i,j,s]*(C[i]+T[i,j]) for j in J) for i in I)) + sum(z[j,s]*u for j in J) for s in S))
 
-@constraint(m, [s=S,j=J], sum(x[i,j,s] for i in I) <= D[j,s])
+@constraint(m, [s=S,j=J], sum(x[i,j,s] for i in I) + z[j,s] >= D[j,s])
 @constraint(m, sum(y[i] for i in I) <= n)
 @constraint(m, [i=I], r[i] <= y[i]*B[i])
 @constraint(m, [i=I, s=S], sum(x[i,j,s] for j in J) <= r[i])
