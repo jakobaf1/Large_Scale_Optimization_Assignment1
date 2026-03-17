@@ -26,13 +26,10 @@ function solve_master( u_dual )
     
     # Add Constraints
     for s in S
-        # println(size(u_dual))
         u = u_dual[s]
-        # println(size(u))
         u1 = u[1]
         u2 = u[2]
-        # println(size(u2))
-        @constraint(mas, sum(u1[j,s]*D[j,s] for j in J) + sum(u2[i,s]*B[i]*y[i] for i in I) <= theta[s])
+        @constraint(mas, sum(u1[j]*D[j,s] for j in J) + sum(u2[i]*B[i]*y[i] for i in I) <= theta[s])
     end
 
     optimize!(mas)
@@ -51,17 +48,17 @@ function solve_sub( y_bar, s )
     set_silent(sub)
 
     # Variables
-    @variable(sub, u1[J,S] >= 0)
-    @variable(sub, u2[I,S] <= 0)
-    @variable(sub, u3[I,S] <= 0)
+    @variable(sub, u1[J] >= 0)
+    @variable(sub, u2[I] <= 0)
+    @variable(sub, u3[I] <= 0)
     
     # Objective
-    @objective(sub, Max, sum(u1[j,s]*D[j,s] for j in J) + sum(u2[i,s]*B[i]*y_bar[i] for i in I) )
+    @objective(sub, Max, sum(u1[j]*D[j,s] for j in J) + sum(u2[i]*B[i]*y_bar[i] for i in I) )
 
     # Constraints
-    @constraint(sub, [i=I, s=S] , u2[i,s] - u3[i,s] <= C[i])
-    @constraint(sub, [i=I, j=J, s=S], u1[j,s] + u3[i,s] <= P*T[i,j])
-    @constraint(sub, [j=J, s=S], u1[j,s] <=P*u)
+    @constraint(sub, [i=I] , u2[i] - u3[i] <= C[i])
+    @constraint(sub, [i=I, j=J], u1[j] + u3[i] <= P*T[i,j])
+    @constraint(sub, [j=J], u1[j] <=P*u)
 
     optimize!(sub)
 
