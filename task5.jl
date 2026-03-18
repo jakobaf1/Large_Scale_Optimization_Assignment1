@@ -90,7 +90,7 @@ let
     Delta=0
     y_bar= ones(Int64, length(I))
     it=1
-    while (UB-LB>Delta)
+    while (round(UB-LB, digits=3)>Delta)
         
         (sub_prob_solution, sub_obj, u_dual )=solve_sub(y_bar)
         
