@@ -21,7 +21,7 @@ set_silent(m)
 @objective(m, Min, sum(y[i]*F[i] + r[i]*C[i] for i in I) + sum(P*(sum(x[i,j,s]*T[i,j] for i in I) + z[j,s]*u) for j in J, s in S))
 
 @constraint(m, [s=S,j=J], sum(x[i,j,s] for i in I) + z[j,s] >= D[j,s])
-# @constraint(m, [s=S,j=J], sum(x[i,j,s] for i in I) + z[j,s] == D[j,s]) # for task 6
+# @constraint(m, [s=S,j=J], sum(x[i,j,s] for i in I) + z[j,s] == D[j,s]) # for task 5
 @constraint(m, sum(y[i] for i in I) <= n)
 @constraint(m, [i=I], r[i] <= y[i]*B[i])
 @constraint(m, [i=I, s=S], sum(x[i,j,s] for j in J) <= r[i])
