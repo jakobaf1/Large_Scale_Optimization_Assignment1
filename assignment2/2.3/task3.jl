@@ -99,27 +99,11 @@ function colgen(w, p, c)
 end
 
 function example()
-    w = [
-        2 6 7;
-        5 2 7;
-        9 3 1;
-    ]
-    p =[
-        8 3 5;
-        4 5 8;
-        9 8 6;
-    ]
-    cap = [10, 7, 9]
-    colgen(w, p, cap)
-end
-
-function example2()
     # Use data from the supplied data file:
     include("../exercise2_data - Copy.jl")
     colgen(w, p, cap)
 end
 
-#example()
-example2()
+example()
 
 end
